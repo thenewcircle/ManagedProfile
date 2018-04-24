@@ -29,10 +29,14 @@ public class EnableProfileActivity extends Activity implements View.OnClickListe
         DevicePolicyManager devicePolicyManager =
                 (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
 
-        // set a profile name by providing the devicePolicyManager the DeviceAdminReceiver
-        // componentName and a name for this profile
+        // set a profile name by providing the devicePolicyManager a componentName
+        // and a name for this profile
+        ComponentName componentName = DeviceAdminReceiverImpl.getComponentName(this);
+        devicePolicyManager.setProfileName(componentName, getString(R.string.profile_name));
+
 
         // Enable the profile
+        devicePolicyManager.setProfileEnabled(componentName);
     }
 
     @Override

@@ -74,19 +74,24 @@ public class ManagedProfileFragment extends android.app.Fragment
         }
 
         // return the DevicePolicyManager
-        return null;
+        return (DevicePolicyManager) activity.getSystemService(Context.DEVICE_POLICY_SERVICE);
     }
 
     private boolean isAppInstalled(String packageName) {
-        // Get the applicationInfo and add the GET_UNINSTALLED_PACKAGES flag
-        // to allow getting the application information from the list of
-        // uninstalled applications
+        try {
+            // Get the applicationInfo and add the GET_UNINSTALLED_PACKAGES flag
+            // to allow getting the application information from the list of
+            // uninstalled applications
+            ApplicationInfo applicationInfo = getActivity().getPackageManager()
+                    .getApplicationInfo(packageName, PackageManager.GET_UNINSTALLED_PACKAGES);
 
-        // Check the ApplicationInfo of the target app, and see if the flags have
-        // ApplicationInfo.FLAG_INSTALLED turned on using bitwise operation.
-
-        // Wrap this in a try catch with NameNotFoundException exception
-        return false;
+            // Here, we check the ApplicationInfo of the target app, and see if the flags have
+            // ApplicationInfo.FLAG_INSTALLED turned on using bitwise operation.
+            return !(0 ==
+                    (applicationInfo.flags & ApplicationInfo.FLAG_INSTALLED));
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
     }
 
     /**
@@ -102,6 +107,8 @@ public class ManagedProfileFragment extends android.app.Fragment
         if (isAppInstalled(packageName)) {
             // Query our DPM to see if the app is not hidden in this profile
             // and return the result
+            return !getDevicePolicyManager().isApplicationHidden(
+                    DeviceAdminReceiverImpl.getComponentName(activity), packageName);
         }
         return false;
     }
@@ -152,9 +159,19 @@ public class ManagedProfileFragment extends android.app.Fragment
         if (!isAppInstalled(packageName)) {
             // If the app is not installed in this profile, we can enable it by
             // DPM.enableSystemApp.  No need to disable and uninstalled app
+            if (enabled) {
+                getDevicePolicyManager().enableSystemApp(
+                        DeviceAdminReceiverImpl.getComponentName(activity), packageName);
+            } else {
+                // But we cannot disable the app since it is already disabled
+                Log.e(TAG, "Cannot disable this app: " + packageName);
+                return;
+            }
         } else {
             // If the app is already installed, we will enable or disable it by
             // DPM.setApplicationHidden
+            getDevicePolicyManager().setApplicationHidden(
+                    DeviceAdminReceiverImpl.getComponentName(activity), packageName, !enabled);
         }
         Toast.makeText(activity,
                 isApplicationEnabled(packageName) ? R.string.enabled : R.string.disabled,
@@ -172,6 +189,7 @@ public class ManagedProfileFragment extends android.app.Fragment
         }
 
         // Ask that all user data be wiped.
+        getDevicePolicyManager().wipeData(0);
 
         // The screen turns off here
     }

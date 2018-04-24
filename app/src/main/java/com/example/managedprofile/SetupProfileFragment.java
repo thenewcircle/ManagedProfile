@@ -60,22 +60,31 @@ public class SetupProfileFragment extends android.app.Fragment implements View.O
         }
 
         // Create an intent that will have an ACTION_PROVISION_MANAGED_PROFILE as action
+        Intent intent = new Intent(ACTION_PROVISION_MANAGED_PROFILE);
 
-        // This app will also managed the work profile, so we target our own package name
-        // by adding it to the Extra of EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME
+        // This app will also manage the work profile, so we target our own package name
+        // by adding it to value of EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME key
         // of the intent
+        intent.putExtra(EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME,
+                activity.getApplicationContext().getPackageName());
 
         // Start the action to initiate provisioning this device
         // If successful, DEVICE_ADMIN_ENABLED action will be called and need to be
         // filtered by our DeviceAdminReceiver implementation as callback to the
         // DeviceAdminReceiver.onProfileProvisioningComplete
+        if (intent.resolveActivity(activity.getPackageManager()) != null) {
+            startActivityForResult(intent, REQUEST_PROVISION_MANAGED_PROFILE);
+            activity.finish();
+        } else {
+            Toast.makeText(activity, "Device provisioning is not enabled. Stopping.",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Add code to handle requestCode from our Manager Profile
+        // Add code to handle requestCode from our Managed Profile
 
         super.onActivityResult(requestCode, resultCode, data);
     }
-
 }
