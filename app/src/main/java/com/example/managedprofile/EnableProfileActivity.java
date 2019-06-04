@@ -1,6 +1,7 @@
 package com.example.managedprofile;
 
 import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -48,5 +49,4 @@ public class EnableProfileActivity extends AppCompatActivity implements View.OnC
             }
         }
     }
-
 }
