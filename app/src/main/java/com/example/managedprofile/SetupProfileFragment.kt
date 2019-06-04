@@ -1,6 +1,7 @@
 package com.example.managedprofile
 
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 
@@ -75,9 +76,18 @@ class SetupProfileFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        // Add code to handle requestCode from our Managed Profile
-
         super.onActivityResult(requestCode, resultCode, data)
+
+        // Add code to handle requestCode from our Managed Profile
+        if (requestCode == REQUEST_PROVISION_MANAGED_PROFILE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Toast.makeText(activity, "Provisioning done.",
+                        Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(activity, "Provisioning failed.",
+                        Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     companion object {
