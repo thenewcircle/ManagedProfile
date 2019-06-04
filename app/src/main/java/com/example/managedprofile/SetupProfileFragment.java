@@ -1,6 +1,7 @@
 package com.example.managedprofile;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -86,8 +87,17 @@ public class SetupProfileFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Add code to handle requestCode from our Managed Profile
-
         super.onActivityResult(requestCode, resultCode, data);
+
+        // Add code to handle requestCode from our Managed Profile
+        if (requestCode == REQUEST_PROVISION_MANAGED_PROFILE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Toast.makeText(getActivity(), "Provisioning done.",
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getActivity(), "Provisioning failed.",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
