@@ -1,15 +1,13 @@
 package com.example.managedprofile;
 
-import android.app.Activity;
-import android.app.admin.DeviceAdminReceiver;
 import android.app.admin.DevicePolicyManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 
-public class EnableProfileActivity extends Activity implements View.OnClickListener {
+public class EnableProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

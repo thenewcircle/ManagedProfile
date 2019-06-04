@@ -1,33 +1,22 @@
 package com.example.managedprofile;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.admin.DeviceAdminReceiver;
 import android.app.admin.DevicePolicyManager;
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.ScrollView;
 import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import static android.app.admin.DevicePolicyManager.FLAG_MANAGED_CAN_ACCESS_PARENT;
-import static android.app.admin.DevicePolicyManager.FLAG_PARENT_CAN_ACCESS_MANAGED;
 
-
-public class ManagedProfileFragment extends android.app.Fragment
+public class ManagedProfileFragment extends Fragment
         implements View.OnClickListener,
         CompoundButton.OnCheckedChangeListener {
 
@@ -68,7 +57,7 @@ public class ManagedProfileFragment extends android.app.Fragment
     // Return the DPM
     private DevicePolicyManager getDevicePolicyManager() {
         // Get the current activity
-        Activity activity = getActivity();
+        FragmentActivity activity = getActivity();
         if (null == activity || activity.isFinishing()) {
             return null;
         }
@@ -101,7 +90,7 @@ public class ManagedProfileFragment extends android.app.Fragment
      * @return True if the application is available in this profile.
      */
     private boolean isApplicationEnabled(String packageName) {
-        Activity activity = getActivity();
+        FragmentActivity activity = getActivity();
 
         // Check if the app is installed first
         if (isAppInstalled(packageName)) {
@@ -151,7 +140,7 @@ public class ManagedProfileFragment extends android.app.Fragment
      * @param enabled     Pass true to enable the app.
      */
     private void setAppEnabled(String packageName, boolean enabled) {
-        Activity activity = getActivity();
+        FragmentActivity activity = getActivity();
         if (null == activity || activity.isFinishing()) {
             return;
         }
@@ -183,7 +172,7 @@ public class ManagedProfileFragment extends android.app.Fragment
      */
     private void removeProfile() {
         // Get the current activity
-        Activity activity = getActivity();
+        FragmentActivity activity = getActivity();
         if (null == activity || activity.isFinishing()) {
             return;
         }
