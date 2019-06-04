@@ -1,23 +1,22 @@
 package com.example.managedprofile;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
-import static android.app.admin.DevicePolicyManager.ACTION_PROVISION_MANAGED_PROFILE;
-import static android.app.admin.DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME;
 
 
 /**
- * This {@link android.app.Fragment} handles initiation of managed profile provisioning.
+ * This {@link Fragment} handles initiation of managed profile provisioning.
  */
-public class SetupProfileFragment extends android.app.Fragment implements View.OnClickListener {
+public class SetupProfileFragment extends Fragment implements View.OnClickListener {
 
     private static final int REQUEST_PROVISION_MANAGED_PROFILE = 1;
 
@@ -54,7 +53,7 @@ public class SetupProfileFragment extends android.app.Fragment implements View.O
      * this device, we will get an error dialog in the following provisioning phase.
      */
     private void provisionManagedProfile() {
-        Activity activity = getActivity();
+        FragmentActivity activity = getActivity();
         if (null == activity) {
             return;
         }

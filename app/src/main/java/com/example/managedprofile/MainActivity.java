@@ -1,11 +1,11 @@
 package com.example.managedprofile;
 
-import android.app.Activity;
 import android.app.admin.DevicePolicyManager;
 import android.content.Context;
 import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,13 +25,13 @@ public class MainActivity extends Activity {
     }
 
     private void showSetupProfile() {
-        getFragmentManager().beginTransaction()
+        getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, SetupProfileFragment.newInstance())
                 .commit();
     }
 
     private void showMainFragment() {
-        getFragmentManager().beginTransaction()
+        getSupportFragmentManager().beginTransaction()
                 .add(R.id.container, ManagedProfileFragment.newInstance())
                 .commit();
     }
