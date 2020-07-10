@@ -10,7 +10,7 @@
     <string name="profile_name">Example Managed Profile</string>
 
     <string name="main_message">The app is ready to control the managed profile.</string>
-    <string name="toggle_calculator">Calculator in this profile: </string>
+    <string name="toggle_chrome">Chrome in this profile: </string>
     <string name="remove_profile">Remove managed profile</string>
 
     <string name="enabled">Enabled</string>
