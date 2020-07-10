@@ -5,9 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-import android.view.View;
 
-public class EnableProfileActivity extends AppCompatActivity implements View.OnClickListener {
+public class EnableProfileActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +18,11 @@ public class EnableProfileActivity extends AppCompatActivity implements View.OnC
         }
         // This is just a friendly shortcut to the main screen.
         setContentView(R.layout.activity_setup);
-        findViewById(R.id.icon).setOnClickListener(this);
+        findViewById(R.id.icon).setOnClickListener((v) -> {
+            // Opens up the main screen
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        });
     }
 
     private void enableProfile() {
@@ -31,18 +34,6 @@ public class EnableProfileActivity extends AppCompatActivity implements View.OnC
         // componentName and a name for this profile
 
         // Enable the profile
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.icon: {
-                // Opens up the main screen
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
-                break;
-            }
-        }
     }
 
 }

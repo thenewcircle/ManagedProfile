@@ -34,11 +34,11 @@
             android:text="@string/main_message" />
 
         <Switch
-            android:id="@+id/toggle_calculator"
+            android:id="@+id/toggle_chrome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:text="@string/toggle_calculator" />
+            android:text="@string/toggle_chrome" />
         \
         <Button
             android:id="@+id/remove_profile"

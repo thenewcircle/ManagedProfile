@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
 import android.view.LayoutInflater;
@@ -16,7 +15,7 @@ import android.view.ViewGroup;
 /**
  * This {@link Fragment} handles initiation of managed profile provisioning.
  */
-public class SetupProfileFragment extends Fragment implements View.OnClickListener {
+public class SetupProfileFragment extends Fragment {
 
     private static final int REQUEST_PROVISION_MANAGED_PROFILE = 1;
 
@@ -35,17 +34,7 @@ public class SetupProfileFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        view.findViewById(R.id.set_up_profile).setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.set_up_profile: {
-                provisionManagedProfile();
-                break;
-            }
-        }
+        view.findViewById(R.id.set_up_profile).setOnClickListener((v) -> provisionManagedProfile());
     }
 
     /**
