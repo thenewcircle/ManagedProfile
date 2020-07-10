@@ -1,13 +1,11 @@
 package com.example.managedprofile
 
+import android.app.Activity
 import android.app.admin.DevicePolicyManager
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
-
-import androidx.fragment.app.Fragment
-
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,28 +14,14 @@ import android.widget.Button
 import android.widget.CompoundButton
 import android.widget.Switch
 import android.widget.Toast
-
+import androidx.fragment.app.Fragment
 
 class ManagedProfileFragment : Fragment(), View.OnClickListener, CompoundButton.OnCheckedChangeListener {
-
-
     // to remove this managed profile.
     private var mButtonRemoveProfile: Button? = null
 
-    // Whether the calculator app is enabled in this profile
-    private var mCalculatorEnabled: Boolean = false
-
-    // Return the DPM
-    private// Get the current activity
-    // return the DevicePolicyManager
-    val devicePolicyManager: DevicePolicyManager?
-        get() {
-            val activity = activity
-            return if (null == activity || activity.isFinishing) {
-                null
-            } else activity.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-        }
-
+    // Whether the chrome app is enabled in this profile
+    private var mChromeEnabled = false
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -45,22 +29,31 @@ class ManagedProfileFragment : Fragment(), View.OnClickListener, CompoundButton.
                 container, false)
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
-        // Retrieves whether the calculator app is enabled in this profile
-        mCalculatorEnabled = isApplicationEnabled(PACKAGE_NAME_CALCULATOR)
+        // Retrieves whether the chrome app is enabled in this profile
+        mChromeEnabled = isApplicationEnabled(PACKAGE_NAME_CHROME)
     }
+
+    // return the DevicePolicyManager
+    private val devicePolicyManager: DevicePolicyManager?
+        private get() {
+            // Get the current activity
+            val activity = activity
+            return if (null == activity || activity.isFinishing) {
+                null
+            } else activity.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+
+            // return the DevicePolicyManager
+        }
 
     private fun isAppInstalled(packageName: String): Boolean {
         return try {
             // Get the applicationInfo and add the GET_UNINSTALLED_PACKAGES flag
             // to allow getting the application information from the list of
             // uninstalled applications
-            @Suppress("DEPRECATION") val applicationInfo = activity!!.packageManager
-                    .getApplicationInfo(packageName,
-                            if (android.os.Build.VERSION.SDK_INT >= 24)
-                                PackageManager.MATCH_UNINSTALLED_PACKAGES
-                            else PackageManager.GET_UNINSTALLED_PACKAGES)
+            val applicationInfo = activity!!.packageManager
+                    .getApplicationInfo(packageName, PackageManager.GET_UNINSTALLED_PACKAGES)
 
             // Here, we check the ApplicationInfo of the target app, and see if the flags have
             // ApplicationInfo.FLAG_INSTALLED turned on using bitwise operation.
@@ -84,16 +77,16 @@ class ManagedProfileFragment : Fragment(), View.OnClickListener, CompoundButton.
             // Query our DPM to see if the app is not hidden in this profile
             // and return the result
             !devicePolicyManager!!.isApplicationHidden(
-                    DeviceAdminReceiverImpl.getComponentName(activity!!), packageName)
+                    DeviceAdminReceiverImpl.getComponentName(activity), packageName)
         } else false
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         mButtonRemoveProfile = view.findViewById(R.id.remove_profile)
         mButtonRemoveProfile!!.setOnClickListener(this)
-        val toggleCalculator = view.findViewById<Switch>(R.id.toggle_calculator)
-        toggleCalculator.isChecked = mCalculatorEnabled
-        toggleCalculator.setOnCheckedChangeListener(this)
+        val toggleChrome = view.findViewById<Switch>(R.id.toggle_chrome)
+        toggleChrome.isChecked = mChromeEnabled
+        toggleChrome.setOnCheckedChangeListener(this)
     }
 
     override fun onClick(view: View) {
@@ -107,9 +100,9 @@ class ManagedProfileFragment : Fragment(), View.OnClickListener, CompoundButton.
 
     override fun onCheckedChanged(compoundButton: CompoundButton, checked: Boolean) {
         when (compoundButton.id) {
-            R.id.toggle_calculator -> {
-                setAppEnabled(PACKAGE_NAME_CALCULATOR, checked)
-                mCalculatorEnabled = isApplicationEnabled(PACKAGE_NAME_CALCULATOR)
+            R.id.toggle_chrome -> {
+                setAppEnabled(PACKAGE_NAME_CHROME, checked)
+                mChromeEnabled = isApplicationEnabled(PACKAGE_NAME_CHROME)
             }
         }
     }
@@ -125,7 +118,6 @@ class ManagedProfileFragment : Fragment(), View.OnClickListener, CompoundButton.
         if (null == activity || activity.isFinishing) {
             return
         }
-
         if (!isAppInstalled(packageName)) {
             // If the app is not installed in this profile, we can enable it by
             // DPM.enableSystemApp.  No need to disable and uninstalled app
@@ -165,12 +157,10 @@ class ManagedProfileFragment : Fragment(), View.OnClickListener, CompoundButton.
     }
 
     companion object {
-
         private const val TAG = "ManagedProfileFragment"
 
-        // Package name of calculator
-        private const val PACKAGE_NAME_CALCULATOR = "com.android.calculator2"
-
+        // Package name of chrome
+        private const val PACKAGE_NAME_CHROME = "com.android.chrome"
         fun newInstance(): ManagedProfileFragment {
             return ManagedProfileFragment()
         }
