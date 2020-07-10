@@ -26,15 +26,15 @@ public class ManagedProfileFragment extends Fragment
 
     private static final String TAG = "ManagedProfileFragment";
 
-    // Package name of calculator
-    private static final String PACKAGE_NAME_CALCULATOR = "com.android.calculator2";
+    // Package name of chrome
+    private static final String PACKAGE_NAME_CHROME = "com.android.chrome";
 
 
     // to remove this managed profile.
     private Button mButtonRemoveProfile;
 
-    // Whether the calculator app is enabled in this profile
-    private boolean mCalculatorEnabled;
+    // Whether the chrome app is enabled in this profile
+    private boolean mChromeEnabled;
 
     public ManagedProfileFragment() {
     }
@@ -54,8 +54,8 @@ public class ManagedProfileFragment extends Fragment
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        // Retrieves whether the calculator app is enabled in this profile
-        mCalculatorEnabled = isApplicationEnabled(PACKAGE_NAME_CALCULATOR);
+        // Retrieves whether the chrome app is enabled in this profile
+        mChromeEnabled = isApplicationEnabled(PACKAGE_NAME_CHROME);
     }
 
     // Return the DPM
@@ -110,9 +110,9 @@ public class ManagedProfileFragment extends Fragment
     public void onViewCreated(View view, Bundle savedInstanceState) {
         mButtonRemoveProfile = view.findViewById(R.id.remove_profile);
         mButtonRemoveProfile.setOnClickListener(this);
-        Switch toggleCalculator = view.findViewById(R.id.toggle_calculator);
-        toggleCalculator.setChecked(mCalculatorEnabled);
-        toggleCalculator.setOnCheckedChangeListener(this);
+        Switch toggleChrome = view.findViewById(R.id.toggle_chrome);
+        toggleChrome.setChecked(mChromeEnabled);
+        toggleChrome.setOnCheckedChangeListener(this);
     }
 
     @Override
@@ -129,9 +129,9 @@ public class ManagedProfileFragment extends Fragment
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
         switch (compoundButton.getId()) {
-            case R.id.toggle_calculator: {
-                setAppEnabled(PACKAGE_NAME_CALCULATOR, checked);
-                mCalculatorEnabled = isApplicationEnabled(PACKAGE_NAME_CALCULATOR);
+            case R.id.toggle_chrome: {
+                setAppEnabled(PACKAGE_NAME_CHROME, checked);
+                mChromeEnabled = isApplicationEnabled(PACKAGE_NAME_CHROME);
                 break;
             }
         }
