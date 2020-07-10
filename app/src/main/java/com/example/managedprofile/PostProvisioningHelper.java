@@ -24,7 +24,6 @@ import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
 
 class PostProvisioningHelper {
-
     private final Context mContext;
     private final DevicePolicyManager mDevicePolicyManager;
 
