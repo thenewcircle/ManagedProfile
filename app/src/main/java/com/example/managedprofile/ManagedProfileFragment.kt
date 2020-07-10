@@ -4,8 +4,6 @@ import android.app.Activity
 import android.app.admin.DevicePolicyManager
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,26 +11,24 @@ import android.widget.Button
 import android.widget.CompoundButton
 import android.widget.Switch
 import android.widget.Toast
-
+import androidx.fragment.app.Fragment
 
 class ManagedProfileFragment : Fragment(), View.OnClickListener, CompoundButton.OnCheckedChangeListener {
-
-
     // to remove this managed profile.
     private var mButtonRemoveProfile: Button? = null
 
-    // Whether the calculator app is enabled in this profile
-    private var mCalculatorEnabled: Boolean = false
+    // whether the chrome app is enabled in this profile
+    private var mChromeEnabled = false
 
-    // Return the DPM
-    private// Get the current activity
     // return the DevicePolicyManager
-    val devicePolicyManager: DevicePolicyManager?
-        get() {
+    private val devicePolicyManager: DevicePolicyManager?
+        private get() {
+            // Get the current activity
             val activity = activity
             return if (null == activity || activity.isFinishing) {
                 null
             } else null
+            // return the DevicePolicyManager
         }
 
     override fun onCreateView(inflater: LayoutInflater,
@@ -42,10 +38,10 @@ class ManagedProfileFragment : Fragment(), View.OnClickListener, CompoundButton.
                 container, false)
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
-        // Retrieves whether the calculator app is enabled in this profile
-        mCalculatorEnabled = isApplicationEnabled(PACKAGE_NAME_CALCULATOR)
+        // Retrieves whether the chrome app is enabled in this profile
+        mChromeEnabled = isApplicationEnabled(PACKAGE_NAME_CHROME)
     }
 
     private fun isAppInstalled(packageName: String): Boolean {
@@ -80,9 +76,9 @@ class ManagedProfileFragment : Fragment(), View.OnClickListener, CompoundButton.
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         mButtonRemoveProfile = view.findViewById(R.id.remove_profile)
         mButtonRemoveProfile!!.setOnClickListener(this)
-        val toggleCalculator = view.findViewById<Switch>(R.id.toggle_calculator)
-        toggleCalculator.isChecked = mCalculatorEnabled
-        toggleCalculator.setOnCheckedChangeListener(this)
+        val toggleChrome = view.findViewById<Switch>(R.id.toggle_chrome)
+        toggleChrome.isChecked = mChromeEnabled
+        toggleChrome.setOnCheckedChangeListener(this)
     }
 
     override fun onClick(view: View) {
@@ -96,9 +92,9 @@ class ManagedProfileFragment : Fragment(), View.OnClickListener, CompoundButton.
 
     override fun onCheckedChanged(compoundButton: CompoundButton, checked: Boolean) {
         when (compoundButton.id) {
-            R.id.toggle_calculator -> {
-                setAppEnabled(PACKAGE_NAME_CALCULATOR, checked)
-                mCalculatorEnabled = isApplicationEnabled(PACKAGE_NAME_CALCULATOR)
+            R.id.toggle_chrome -> {
+                setAppEnabled(PACKAGE_NAME_CHROME, checked)
+                mChromeEnabled = isApplicationEnabled(PACKAGE_NAME_CHROME)
             }
         }
     }
@@ -114,7 +110,6 @@ class ManagedProfileFragment : Fragment(), View.OnClickListener, CompoundButton.
         if (null == activity || activity.isFinishing) {
             return
         }
-
         if (!isAppInstalled(packageName)) {
             // If the app is not installed in this profile, we can enable it by
             // DPM.enableSystemApp.  No need to disable and uninstalled app
@@ -143,12 +138,10 @@ class ManagedProfileFragment : Fragment(), View.OnClickListener, CompoundButton.
     }
 
     companion object {
+        private const val TAG = "ManagedProfileFragment"
 
-        private val TAG = "ManagedProfileFragment"
-
-        // Package name of calculator
-        private val PACKAGE_NAME_CALCULATOR = "com.android.calculator2"
-
+        // Package name of chrome
+        private const val PACKAGE_NAME_CHROME = "com.android.chrome"
         fun newInstance(): ManagedProfileFragment {
             return ManagedProfileFragment()
         }

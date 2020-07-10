@@ -1,36 +1,23 @@
 package com.example.managedprofile
 
-
 import android.content.Intent
 import android.os.Bundle
-
-import androidx.fragment.app.Fragment
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.fragment.app.Fragment
 
 /**
  * This [Fragment] handles initiation of managed profile provisioning.
  */
-class SetupProfileFragment : Fragment(), View.OnClickListener {
-
+class SetupProfileFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_setup_profile, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        view.findViewById<View>(R.id.set_up_profile).setOnClickListener(this)
-    }
-
-    override fun onClick(view: View) {
-        when (view.id) {
-            R.id.set_up_profile -> {
-                provisionManagedProfile()
-            }
-        }
+        view.findViewById<View>(R.id.set_up_profile).setOnClickListener { v: View? -> provisionManagedProfile() }
     }
 
     /**
@@ -54,17 +41,13 @@ class SetupProfileFragment : Fragment(), View.OnClickListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         // Add code to handle requestCode from our Manager Profile
-
         super.onActivityResult(requestCode, resultCode, data)
     }
 
     companion object {
-
-        private val REQUEST_PROVISION_MANAGED_PROFILE = 1
-
+        private const val REQUEST_PROVISION_MANAGED_PROFILE = 1
         fun newInstance(): SetupProfileFragment {
             return SetupProfileFragment()
         }
     }
-
 }
