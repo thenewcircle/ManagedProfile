@@ -16,8 +16,12 @@ class DeviceAdminReceiverImpl : DeviceAdminReceiver() {
     override fun onProfileProvisioningComplete(context: Context, intent: Intent) {
         Log.d(TAG, "onProfileProvisioningComplete")
 
-        // launch the EnableProfileActivity now that your device is provisioned
-        val launch = Intent(context, EnableProfileActivity::class.java)
+        // Important: After the profile has been created, the MDM must enable it for corporate
+        // apps to become visible in the launcher.
+        PostProvisioningHelper(context).completeProvisioning()
+
+        // launch the MainActivity now that your device is provisioned
+        val launch = Intent(context, MainActivity::class.java)
         launch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(launch)
     }
