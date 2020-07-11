@@ -5,6 +5,7 @@ import android.app.admin.DevicePolicyManager;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -52,8 +53,8 @@ public class ManagedProfileFragment extends Fragment
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         // Retrieves whether the chrome app is enabled in this profile
         mChromeEnabled = isApplicationEnabled(PACKAGE_NAME_CHROME);
     }
@@ -72,16 +73,22 @@ public class ManagedProfileFragment extends Fragment
 
     private boolean isAppInstalled(String packageName) {
         try {
+            int packageFlags;
+            if (Build.VERSION.SDK_INT < 24) {
+                //noinspection deprecation
+                packageFlags = PackageManager.GET_UNINSTALLED_PACKAGES;
+            } else {
+                packageFlags = PackageManager.MATCH_UNINSTALLED_PACKAGES;
+            }
             // Get the applicationInfo and add the GET_UNINSTALLED_PACKAGES flag
             // to allow getting the application information from the list of
             // uninstalled applications
             ApplicationInfo applicationInfo = getActivity().getPackageManager()
-                    .getApplicationInfo(packageName, PackageManager.GET_UNINSTALLED_PACKAGES);
+                    .getApplicationInfo(packageName, packageFlags);
 
             // Here, we check the ApplicationInfo of the target app, and see if the flags have
             // ApplicationInfo.FLAG_INSTALLED turned on using bitwise operation.
-            return !(0 ==
-                    (applicationInfo.flags & ApplicationInfo.FLAG_INSTALLED));
+            return !(0 == (applicationInfo.flags & ApplicationInfo.FLAG_INSTALLED));
         } catch (PackageManager.NameNotFoundException e) {
             return false;
         }
