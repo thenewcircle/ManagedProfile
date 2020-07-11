@@ -1,5 +1,6 @@
 package com.example.managedprofile;
 
+import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +19,15 @@ public class DeviceAdminReceiverImpl extends android.app.admin.DeviceAdminReceiv
     public void onProfileProvisioningComplete(Context context, Intent intent) {
         Log.d(TAG, "onProfileProvisioningComplete");
 
-        new PostProvisioningHelper(context).completeProvisioning();
+        DevicePolicyManager devicePolicyManager =
+                (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
+
+        // This is the name for the newly created managed profile.
+        ComponentName componentName = getComponentName(context);
+        devicePolicyManager.setProfileName(componentName, context.getString(R.string.profile_name));
+
+        // We enable the profile here.
+        devicePolicyManager.setProfileEnabled(componentName);
     }
 
     public static ComponentName getComponentName(Context context) {
@@ -26,5 +35,4 @@ public class DeviceAdminReceiverImpl extends android.app.admin.DeviceAdminReceiv
         // by providing this application context and the class
         return new ComponentName(context.getApplicationContext(), DeviceAdminReceiverImpl.class);
     }
-
 }
