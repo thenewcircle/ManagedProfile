@@ -25,7 +25,7 @@ class ManagedProfileFragment : Fragment(), View.OnClickListener, CompoundButton.
 
     // return the DevicePolicyManager
     private val devicePolicyManager: DevicePolicyManager?
-        private get() {
+        get() {
             // Get the current activity
             val activity = activity
             return if (null == activity || activity.isFinishing) null
