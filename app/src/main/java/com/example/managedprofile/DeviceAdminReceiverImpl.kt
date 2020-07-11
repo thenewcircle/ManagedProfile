@@ -19,11 +19,6 @@ class DeviceAdminReceiverImpl : DeviceAdminReceiver() {
         // Important: After the profile has been created, the MDM must enable it for corporate
         // apps to become visible in the launcher.
         PostProvisioningHelper(context).completeProvisioning()
-
-        // launch the MainActivity now that your device is provisioned
-        val launch = Intent(context, MainActivity::class.java)
-        launch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(launch)
     }
 
     companion object {

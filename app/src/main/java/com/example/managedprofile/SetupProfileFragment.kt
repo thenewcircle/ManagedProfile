@@ -35,25 +35,27 @@ class SetupProfileFragment : Fragment() {
         // Create an intent that will have an ACTION_PROVISION_MANAGED_PROFILE as action
         val intent = Intent(DevicePolicyManager.ACTION_PROVISION_MANAGED_PROFILE)
 
-        // For phones with Android M and newer, we would need to provide our implementation for
-        // DeviceAdminReceiver
-        //
-        // , we would need to
-        // This app will also manage the work profile so we target our own package name by putting
-        // it as an extra value in the intent.
-        // If the SDK version is < M, we will use the EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME
-        // as a key, and EXTRA_PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME key for anything else
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            @Suppress("DEPRECATION")
-            intent.putExtra(
-                    DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME,
-                    activity.applicationContext.packageName
-            )
-        } else {
+        // As part of the intent, We will need to add an extra key/value to connect the admin
+        // managing app to this package
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // For Android M and newer, we would need to provide our implementation for
+            // DeviceAdminReceiver.  We instantiate a ComponentName object with the class name
+            // and provide that as an extra Parcelable type value, with the
+            // EXTRA_PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME key
             val component = ComponentName(activity, DeviceAdminReceiverImpl::class.java.name)
             intent.putExtra(
                     DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME,
                     component
+            )
+        } else {
+            // For all older Android, we need to use the EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME
+            // key with the packageName as a value.  This sets the device management application as
+            // only this package. This is deprecated as Android API-23 supports more than one device
+            // admin app
+            @Suppress("DEPRECATION")
+            intent.putExtra(
+                    DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME,
+                    activity.applicationContext.packageName
             )
         }
 
