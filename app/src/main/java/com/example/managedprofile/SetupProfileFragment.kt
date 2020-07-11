@@ -42,10 +42,9 @@ class SetupProfileFragment : Fragment() {
             // DeviceAdminReceiver.  We instantiate a ComponentName object with the class name and
             // provide that as an extra (Parcelable) value, with the
             // EXTRA_PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME key
-            val component = ComponentName(activity, DeviceAdminReceiverImpl::class.java.name)
             intent.putExtra(
                     DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME,
-                    component
+                    ComponentName(activity, DeviceAdminReceiverImpl::class.java.name)
             )
         } else {
             // For older Android OS, we will need to use the
