@@ -1,6 +1,7 @@
 package com.example.managedprofile
 
 import android.app.admin.DeviceAdminReceiver
+import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -18,7 +19,15 @@ class DeviceAdminReceiverImpl : DeviceAdminReceiver() {
 
         // Important: After the profile has been created, the MDM must enable it for corporate
         // apps to become visible in the launcher.
-        PostProvisioningHelper(context).completeProvisioning()
+        val devicePolicyManager = context.getSystemService(Context.DEVICE_POLICY_SERVICE)
+                as DevicePolicyManager
+
+        // This is the name for the newly created managed profile.
+        val componentName = getComponentName(context)
+        devicePolicyManager.setProfileName(componentName, context.getString(R.string.profile_name))
+
+        // We enable the profile here.
+        devicePolicyManager.setProfileEnabled(componentName)
     }
 
     companion object {
