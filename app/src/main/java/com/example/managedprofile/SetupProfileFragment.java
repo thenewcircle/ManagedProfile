@@ -2,7 +2,10 @@ package com.example.managedprofile;
 
 
 import android.app.Activity;
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
+
+import kotlin.Suppress;
 
 import static android.app.admin.DevicePolicyManager.*;
 
@@ -57,11 +62,27 @@ public class SetupProfileFragment extends Fragment {
         // Create an intent that will have an ACTION_PROVISION_MANAGED_PROFILE as action
         Intent intent = new Intent(ACTION_PROVISION_MANAGED_PROFILE);
 
+        // As part of the intent, We will need to add an extra key/value to connect the admin
+        // managing app to this package
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // For Android M and newer, we would need to provide our implementation for
+            // DeviceAdminReceiver.  We instantiate a ComponentName object with the class name and
+            // provide that as an extra (Parcelable) value, with the
+            // EXTRA_PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME key
+            intent.putExtra(EXTRA_PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME,
+                    new ComponentName(activity, DeviceAdminReceiverImpl.class.getName()));
+        } else {
+            // For older Android OS, we will need to use the
+            // EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME key with the packageName as a value.
+            // This sets the device management application as only this package. This is deprecated
+            // since Android API-23 supports more than one device admin app
+            intent.putExtra(EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME,
+                    activity.getApplicationContext().getPackageName());
+        }
+
         // This app will also manage the work profile so we target our own package name by putting
         // it as an extra value in the intent with the EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME
         // key
-        intent.putExtra(EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME,
-                activity.getApplicationContext().getPackageName());
 
         // Start the action to initiate provisioning this device
         // If successful, DEVICE_ADMIN_ENABLED action will be called and need to be

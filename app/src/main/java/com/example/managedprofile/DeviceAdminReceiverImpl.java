@@ -18,10 +18,7 @@ public class DeviceAdminReceiverImpl extends android.app.admin.DeviceAdminReceiv
     public void onProfileProvisioningComplete(Context context, Intent intent) {
         Log.d(TAG, "onProfileProvisioningComplete");
 
-        // launch the EnableProfileActivity now that your device is provisioned
-        Intent launch = new Intent(context, EnableProfileActivity.class);
-        launch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(launch);
+        new PostProvisioningHelper(context).completeProvisioning();
     }
 
     public static ComponentName getComponentName(Context context) {
