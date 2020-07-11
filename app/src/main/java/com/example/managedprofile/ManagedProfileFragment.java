@@ -20,8 +20,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 
-public class ManagedProfileFragment extends Fragment
-        implements View.OnClickListener,
+public class ManagedProfileFragment extends Fragment implements View.OnClickListener,
         CompoundButton.OnCheckedChangeListener {
 
     private static final String TAG = "ManagedProfileFragment";
