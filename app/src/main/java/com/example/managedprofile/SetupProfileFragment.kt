@@ -39,8 +39,8 @@ class SetupProfileFragment : Fragment() {
         // managing app to this package
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             // For Android M and newer, we would need to provide our implementation for
-            // DeviceAdminReceiver.  We instantiate a ComponentName object with the class name
-            // and provide that as an extra Parcelable type value, with the
+            // DeviceAdminReceiver.  We instantiate a ComponentName object with the class name and
+            // provide that as an extra (Parcelable) value, with the
             // EXTRA_PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME key
             val component = ComponentName(activity, DeviceAdminReceiverImpl::class.java.name)
             intent.putExtra(
@@ -48,10 +48,10 @@ class SetupProfileFragment : Fragment() {
                     component
             )
         } else {
-            // For all older Android, we need to use the EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME
-            // key with the packageName as a value.  This sets the device management application as
-            // only this package. This is deprecated as Android API-23 supports more than one device
-            // admin app
+            // For older Android OS, we will need to use the
+            // EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME key with the packageName as a value.
+            // This sets the device management application as only this package. This is deprecated
+            // since Android API-23 supports more than one device admin app
             @Suppress("DEPRECATION")
             intent.putExtra(
                     DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME,
