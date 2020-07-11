@@ -29,9 +29,9 @@ class SetupProfileFragment : Fragment() {
 
         // Create an intent that will have an ACTION_PROVISION_MANAGED_PROFILE as action
 
-        // This app will also managed the work profile, so we target our own package name
-        // by adding it to the Extra of EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME
-        // of the intent
+        // This app will also manage the work profile so we target our own package name by putting
+        // it as an extra value in the intent with the EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME
+        // key
 
         // Start the action to initiate provisioning this device
         // If successful, DEVICE_ADMIN_ENABLED action will be called and need to be
