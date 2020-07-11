@@ -3,7 +3,7 @@
 
     <string name="setup_profile_message">This app is currently not a profile owner.</string>
     <string name="set_up_profile">Set up profile</string>
-
+    <string name="profile_name">Example Managed Profile</string>
     <string name="main_message">The app is ready to control the managed profile.</string>
     <string name="toggle_chrome">Chrome in this profile: </string>
     <string name="remove_profile">Remove managed profile</string>
