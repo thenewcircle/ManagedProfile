@@ -80,7 +80,7 @@ public class ManagedProfileFragment extends Fragment
             } else {
                 packageFlags = PackageManager.MATCH_UNINSTALLED_PACKAGES;
             }
-            // Get the applicationInfo and add the GET_UNINSTALLED_PACKAGES flag
+            // via the packageManager, get the applicationInfo by providing the packageFlags
             // to allow getting the application information from the list of
             // uninstalled applications
             ApplicationInfo applicationInfo = getActivity().getPackageManager()
