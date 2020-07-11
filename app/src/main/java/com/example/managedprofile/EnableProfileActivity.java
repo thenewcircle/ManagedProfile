@@ -1,7 +1,5 @@
 package com.example.managedprofile;
 
-import android.app.admin.DevicePolicyManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
