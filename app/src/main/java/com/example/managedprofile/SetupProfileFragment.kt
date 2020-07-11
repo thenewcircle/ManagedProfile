@@ -1,6 +1,7 @@
 package com.example.managedprofile
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,9 +30,19 @@ class SetupProfileFragment : Fragment() {
 
         // Create an intent that will have an ACTION_PROVISION_MANAGED_PROFILE as action
 
-        // This app will also manage the work profile so we target our own package name by putting
-        // it as an extra value in the intent with the EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME
-        // key
+        // As part of the intent, We will need to add an extra key/value to connect the admin
+        // managing app to this package
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // For Android M and newer, we would need to provide our implementation for
+            // DeviceAdminReceiver.  We instantiate a ComponentName object with the class name
+            // and provide that as an extra Parcelable type value, with the
+            // EXTRA_PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME key
+        } else {
+            // For all older Android, we need to use the EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME
+            // key with the packageName as a value.  This sets the device management application as
+            // only this package. This is deprecated as Android API-23 supports more than one device
+            // admin app
+        }
 
         // Start the action to initiate provisioning this device
         // If successful, DEVICE_ADMIN_ENABLED action will be called and need to be
