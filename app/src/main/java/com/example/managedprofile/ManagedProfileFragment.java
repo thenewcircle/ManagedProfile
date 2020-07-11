@@ -1,12 +1,12 @@
 package com.example.managedprofile;
 
-import android.app.Activity;
 import android.app.admin.DevicePolicyManager;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
 import android.view.LayoutInflater;
@@ -18,8 +18,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 
-public class ManagedProfileFragment extends Fragment
-        implements View.OnClickListener,
+public class ManagedProfileFragment extends Fragment implements View.OnClickListener,
         CompoundButton.OnCheckedChangeListener {
 
     private static final String TAG = "ManagedProfileFragment";
@@ -50,8 +49,8 @@ public class ManagedProfileFragment extends Fragment
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         // Retrieves whether the chrome app is enabled in this profile
         mChromeEnabled = isApplicationEnabled(PACKAGE_NAME_CHROME);
     }
@@ -76,7 +75,7 @@ public class ManagedProfileFragment extends Fragment
         } else {
             packageFlags = PackageManager.MATCH_UNINSTALLED_PACKAGES;
         }
-        
+
         // via the packageManager, get the applicationInfo by providing the packageFlags
         // to allow getting the application information from the list of
         // uninstalled applications
