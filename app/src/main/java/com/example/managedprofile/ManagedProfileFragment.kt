@@ -45,9 +45,9 @@ class ManagedProfileFragment : Fragment(), View.OnClickListener, CompoundButton.
     }
 
     private fun isAppInstalled(packageName: String): Boolean {
-        // Get the applicationInfo and add the GET_UNINSTALLED_PACKAGES flag
-        // to allow getting the application information from the list of
-        // uninstalled applications
+        // Get the applicationInfo and add the GET_UNINSTALLED_PACKAGES or
+        // MATCH_UNINSTALLED_PACKAGES (for SDK_INT >= 24) flags to allow getting the application
+        // information from the list of uninstalled applications
 
         // Check the ApplicationInfo of the target app, and see if the flags have
         // ApplicationInfo.FLAG_INSTALLED turned on using bitwise operation.
