@@ -2,7 +2,6 @@ package com.example.managedprofile;
 
 
 import android.app.Activity;
-import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Build;
@@ -18,9 +17,10 @@ import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 
-import kotlin.Suppress;
-
 import static android.app.admin.DevicePolicyManager.*;
+
+import static android.app.admin.DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME;
+import static android.app.admin.DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME;
 
 
 /**
@@ -79,10 +79,6 @@ public class SetupProfileFragment extends Fragment {
             intent.putExtra(EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME,
                     activity.getApplicationContext().getPackageName());
         }
-
-        // This app will also manage the work profile so we target our own package name by putting
-        // it as an extra value in the intent with the EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME
-        // key
 
         // Start the action to initiate provisioning this device
         // If successful, DEVICE_ADMIN_ENABLED action will be called and need to be
