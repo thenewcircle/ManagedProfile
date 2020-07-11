@@ -35,8 +35,16 @@ class SetupProfileFragment : Fragment() {
         // Create an intent that will have an ACTION_PROVISION_MANAGED_PROFILE as action
         val intent = Intent(DevicePolicyManager.ACTION_PROVISION_MANAGED_PROFILE)
 
-        // Use a different intent extra below M to configure the admin component.
+        // For phones with Android M and newer, we would need to provide our implementation for
+        // DeviceAdminReceiver
+        //
+        // , we would need to
+        // This app will also manage the work profile so we target our own package name by putting
+        // it as an extra value in the intent.
+        // If the SDK version is < M, we will use the EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME
+        // as a key, and EXTRA_PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME key for anything else
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            @Suppress("DEPRECATION")
             intent.putExtra(
                     DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME,
                     activity.applicationContext.packageName
@@ -62,7 +70,7 @@ class SetupProfileFragment : Fragment() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         // Add code to handle requestCode from our Managed Profile
