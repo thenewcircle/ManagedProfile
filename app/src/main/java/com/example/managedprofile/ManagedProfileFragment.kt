@@ -47,9 +47,9 @@ class ManagedProfileFragment : Fragment(), View.OnClickListener, CompoundButton.
 
     private fun isAppInstalled(packageName: String): Boolean {
         return try {
-            // Get the applicationInfo and add the GET_UNINSTALLED_PACKAGES flag
-            // to allow getting the application information from the list of
-            // uninstalled applications
+            // Get the applicationInfo and add the GET_UNINSTALLED_PACKAGES or
+            // MATCH_UNINSTALLED_PACKAGES (for SDK_INT >= 24) flags to allow getting the application
+            // information from the list of uninstalled applications
             val applicationInfo = activity!!.packageManager
                     .getApplicationInfo(packageName, if (Build.VERSION.SDK_INT < 24) {
                         @Suppress("DEPRECATION")
