@@ -1,10 +1,10 @@
 package com.example.managedprofile
 
-import android.app.Activity
 import android.app.admin.DevicePolicyManager
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,8 +20,20 @@ class ManagedProfileFragment : Fragment(), View.OnClickListener, CompoundButton.
     // to remove this managed profile.
     private var mButtonRemoveProfile: Button? = null
 
-    // Whether the chrome app is enabled in this profile
+    // whether the chrome app is enabled in this profile
     private var mChromeEnabled = false
+
+    // return the DevicePolicyManager
+    private val devicePolicyManager: DevicePolicyManager?
+        private get() {
+            // Get the current activity
+            val activity = activity
+            return if (null == activity || activity.isFinishing) {
+                null
+            } else null
+            // return the DevicePolicyManager
+        }
+
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -35,25 +47,18 @@ class ManagedProfileFragment : Fragment(), View.OnClickListener, CompoundButton.
         mChromeEnabled = isApplicationEnabled(PACKAGE_NAME_CHROME)
     }
 
-    // return the DevicePolicyManager
-    private val devicePolicyManager: DevicePolicyManager?
-        private get() {
-            // Get the current activity
-            val activity = activity
-            return if (null == activity || activity.isFinishing) {
-                null
-            } else activity.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-
-            // return the DevicePolicyManager
-        }
-
     private fun isAppInstalled(packageName: String): Boolean {
         return try {
             // Get the applicationInfo and add the GET_UNINSTALLED_PACKAGES flag
             // to allow getting the application information from the list of
             // uninstalled applications
             val applicationInfo = activity!!.packageManager
-                    .getApplicationInfo(packageName, PackageManager.GET_UNINSTALLED_PACKAGES)
+                    .getApplicationInfo(packageName, if (Build.VERSION.SDK_INT < 24) {
+                        @Suppress("DEPRECATION")
+                        PackageManager.GET_UNINSTALLED_PACKAGES
+                    } else {
+                        PackageManager.MATCH_UNINSTALLED_PACKAGES
+                    })
 
             // Here, we check the ApplicationInfo of the target app, and see if the flags have
             // ApplicationInfo.FLAG_INSTALLED turned on using bitwise operation.

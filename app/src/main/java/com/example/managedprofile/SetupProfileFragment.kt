@@ -2,7 +2,9 @@ package com.example.managedprofile
 
 import android.app.Activity
 import android.app.admin.DevicePolicyManager
+import android.content.ComponentName
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -33,11 +35,21 @@ class SetupProfileFragment : Fragment() {
         // Create an intent that will have an ACTION_PROVISION_MANAGED_PROFILE as action
         val intent = Intent(DevicePolicyManager.ACTION_PROVISION_MANAGED_PROFILE)
 
-        // This app will also manage the work profile, so we target our own package name
-        // by adding it to value of EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME key
-        // of the intent
-        intent.putExtra(DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME,
-                activity.applicationContext.packageName)
+        // Use a different intent extra below M to configure the admin component.
+
+        // Use a different intent extra below M to configure the admin component.
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            intent.putExtra(
+                    DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME,
+                    activity.applicationContext.packageName
+            )
+        } else {
+            val component = ComponentName(activity, DeviceAdminReceiverImpl::class.java.name)
+            intent.putExtra(
+                    DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME,
+                    component
+            )
+        }
 
         // Start the action to initiate provisioning this device
         // If successful, DEVICE_ADMIN_ENABLED action will be called and need to be

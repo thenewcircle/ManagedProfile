@@ -33,5 +33,4 @@ internal class PostProvisioningHelper(private val mContext: Context) {
         // We enable the profile here.
         mDevicePolicyManager.setProfileEnabled(componentName)
     }
-
 }
