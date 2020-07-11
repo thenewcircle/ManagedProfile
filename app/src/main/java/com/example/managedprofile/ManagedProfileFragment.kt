@@ -28,10 +28,8 @@ class ManagedProfileFragment : Fragment(), View.OnClickListener, CompoundButton.
         private get() {
             // Get the current activity
             val activity = activity
-            return if (null == activity || activity.isFinishing) {
-                null
-            } else null
-            // return the DevicePolicyManager
+            return if (null == activity || activity.isFinishing) null
+            else activity.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
         }
 
     override fun onCreateView(inflater: LayoutInflater,

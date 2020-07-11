@@ -36,8 +36,6 @@ class SetupProfileFragment : Fragment() {
         val intent = Intent(DevicePolicyManager.ACTION_PROVISION_MANAGED_PROFILE)
 
         // Use a different intent extra below M to configure the admin component.
-
-        // Use a different intent extra below M to configure the admin component.
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             intent.putExtra(
                     DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME,
