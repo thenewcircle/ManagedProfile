@@ -2,6 +2,8 @@ package com.example.managedprofile;
 
 import android.app.Activity;
 import android.app.admin.DevicePolicyManager;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
@@ -67,7 +69,15 @@ public class ManagedProfileFragment extends Fragment
     }
 
     private boolean isAppInstalled(String packageName) {
-        // Get the applicationInfo and add the GET_UNINSTALLED_PACKAGES flag
+        int packageFlags;
+        if (Build.VERSION.SDK_INT < 24) {
+            //noinspection deprecation
+            packageFlags = PackageManager.GET_UNINSTALLED_PACKAGES;
+        } else {
+            packageFlags = PackageManager.MATCH_UNINSTALLED_PACKAGES;
+        }
+        
+        // via the packageManager, get the applicationInfo by providing the packageFlags
         // to allow getting the application information from the list of
         // uninstalled applications
 
