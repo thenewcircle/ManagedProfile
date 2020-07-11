@@ -19,6 +19,8 @@ public class DeviceAdminReceiverImpl extends android.app.admin.DeviceAdminReceiv
     public void onProfileProvisioningComplete(Context context, Intent intent) {
         Log.d(TAG, "onProfileProvisioningComplete");
 
+        // Important: After the profile has been created, the MDM must enable it for corporate
+        // apps to become visible in the launcher.
         DevicePolicyManager devicePolicyManager =
                 (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
 
